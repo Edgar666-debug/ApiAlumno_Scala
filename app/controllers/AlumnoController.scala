@@ -5,7 +5,10 @@ import play.api.libs.json._
 import play.api.mvc._
 import models.alumnosDAO
 import models.alumnos
+import play.filters.csrf._
+
 import scala.concurrent.{ExecutionContext, Future}
+import scala.util.Random
 
 @Singleton
 class AlumnoController @Inject()(cc: ControllerComponents, alumnosDAO: alumnosDAO)(implicit exec: ExecutionContext) extends AbstractController(cc) {
@@ -27,18 +30,28 @@ class AlumnoController @Inject()(cc: ControllerComponents, alumnosDAO: alumnosDA
     }
   }
 
+  def getAlumnoByName(name: String): Action[AnyContent] = Action.async {
+    alumnosDAO.getByName(name).map{
+      case Some(alumno) => Ok(Json.toJson(alumno))
+      case None => NotFound(Json.obj("error" -> s"alumno no encontrado con el $name"))
+    }.recover{
+      case ex: Exception => InternalServerError(Json.obj("error" -> s"error al obtener el alumno $name" ))
+    }
+  }
+
   def insert: Action[JsValue] = Action.async(parse.json) { request =>
     request.body.validate[alumnos].fold(
       errors => Future.successful(BadRequest(JsError.toJson(errors))),
-      alumnos => {
-        alumnosDAO.insert(alumnos).map { _ =>
-          Created(Json.obj("mensaje" -> "producto insertado", "alumno" -> Json.toJson(alumnos) ))
+      alumno => {
+        alumnosDAO.insert(alumno).map { _ =>
+          Created(Json.obj("mensaje" -> "alumno insertado", "alumno" -> Json.toJson(alumno)))
         }
       }
     )
   }
 
-  def delete (id: Int): Action[AnyContent] = Action.async {
+
+    def delete (id: Int): Action[AnyContent] = Action.async {
     alumnosDAO.delete(id).map { deletedCount =>
       if (deletedCount > 0){
         Ok(Json.obj("status" -> "Alumno eliminado con éxito"))

@@ -18,15 +18,17 @@ class alumnosDAO @Inject()(dbConfigProvider: DatabaseConfigProvider)(implicit ec
   private val students = TableQuery[alumno]
 
   // CRUD
-  //Metodo para buscar todos los productos
+  //Metodo para buscar todos los ALUMNOS
   def all(): Future[Seq[alumnos]] = db.run(students.result)
-  //Metodo para buscar un producto por su id
+  //Metodo para buscar un ALUMNOS por su id
   def get(id: Int): Future[Option[alumnos]] = db.run(students.filter(_.id === id).result.headOption)
-  // Metodo para insertar un nuevo producto
-  def insert(alumnos: alumnos): Future[Int] = db.run(students += alumnos)
-  // Metodo para borrar un producto
+  //Metodo para buscar un ALUMNOS por su nombre
+  def getByName(name: String): Future[Option[alumnos]] = db.run(students.filter(_.nombre === name).result.headOption)
+  // Metodo para insertar un nuevo ALUMNOS
+  def insert(Alumnos: alumnos): Future[Int] = db.run(students += Alumnos)
+  // Metodo para borrar un ALUMNOS
   def delete (id: Int): Future[Int] = db.run(students.filter(_.id === id).delete)
-  // Metodo para actualizar un producto
+  // Metodo para actualizar un ALUMNOS
   def update(id: Int, alumnos: alumnos): Future[Int] = db.run(students.filter(_.id === id).update(alumnos))
 
 }

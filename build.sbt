@@ -7,7 +7,7 @@ lazy val root = (project in file(".")).enablePlugins(PlayScala)
 scalaVersion := "2.13.15"
 
 libraryDependencies += guice
-libraryDependencies += "org.scalatestplus.play" %% "scalatestplus-play" % "7.0.0" % Test
+libraryDependencies += "org.scalatestplus.play" %% "scalatestplus-play" % "7.0.1" % Test
 libraryDependencies += "org.webjars" % "bootstrap" % "5.3.3"
 libraryDependencies += "org.webjars" % "jquery" % "3.7.1"
 libraryDependencies ++= Seq(
@@ -16,6 +16,8 @@ libraryDependencies ++= Seq(
 )
 libraryDependencies += "com.typesafe.play" %% "play-slick" % "5.3.0"
 libraryDependencies += "org.postgresql" % "postgresql" % "42.7.3"
+libraryDependencies += "com.typesafe.play" %% "play-slick-evolutions" % "5.3.0"
+libraryDependencies += "org.mindrot" % "jbcrypt" % "0.4"
 // Adds additional packages into Twirl
 //TwirlKeys.templateImports += "com.example.controllers._"
 
