@@ -1,0 +1,19 @@
+version: '3.9'
+services:
+  db:
+    image: postgres:latest
+    container_name: postgres
+    restart: always
+    environment:
+      POSTGRES_DB: ${SCALA_DATASOURCE_DB}
+      POSTGRES_USER: ${SCALA_DATASOURCE_USERNAME}
+      POSTGRES_PASSWORD: ${SCALA_DATASOURCE_PASSWORD}
+    ports:
+      - "5434:5432"
+    volumes:
+      -  db:/var/lib/postgresql/data
+      - ./db/init-scripts.sql:/docker-entrypoint-init-db.d/init-scripts.sql
+
+volumes:
+  db:
+    driver: local
