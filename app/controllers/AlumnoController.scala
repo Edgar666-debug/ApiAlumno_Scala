@@ -5,10 +5,8 @@ import play.api.libs.json._
 import play.api.mvc._
 import models.alumnosDAO
 import models.alumnos
-import play.filters.csrf._
 
 import scala.concurrent.{ExecutionContext, Future}
-import scala.util.Random
 
 @Singleton
 class AlumnoController @Inject()(cc: ControllerComponents, alumnosDAO: alumnosDAO)(implicit exec: ExecutionContext) extends AbstractController(cc) {
